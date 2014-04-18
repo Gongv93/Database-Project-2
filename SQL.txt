@@ -1,0 +1,27 @@
+A)
+
+SELECT controlArea
+FROM ControlArea CA
+WHERE CA.controlarea IN
+	( SELECT controlAreaID 
+	  FROM TurnStiles 
+	  GROUP BY controlAreaID 
+	  HAVING COUNT(controlAreaID) >15
+	);
+
+B)
+
+SELECT DISTINCT remoteunit
+FROM remoteunit 
+WHERE count(remoteunit) > 1
+
+C)
+
+SELECT stationname
+FROM Station
+WHERE stationID IN 
+	 (SELECT stationID
+	  FROM controlareas, turnstiles
+	  WHERE controlareas.controlAreaID IN (COUNT(turnstiles.controlareaID) > 15))
+
+D)
