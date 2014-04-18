@@ -51,7 +51,7 @@
 		<br>
 			<?php
 				$strSQL = "SELECT S.stationID, S.stationName, COUNT(controlArea) AS ControlAreas,SUM(TurnStiles) AS TurnStiles
-						   FROM Station S, ControlArea CA ( SELECT controlAreaID, COUNT(controlAreaID) AS TurnStiles
+						   FROM Station S, ControlArea CA, ( SELECT controlAreaID, COUNT(controlAreaID) AS TurnStiles
 														    FROM TurnStiles
 														    GROUP BY controlAreaID
 													      ) R1
@@ -72,5 +72,8 @@
 			mysql_close();
 			?>		
 		</div>
+		<br>
+		<br>
+		<br>
 	</body>
 </html>

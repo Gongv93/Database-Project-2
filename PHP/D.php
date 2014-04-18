@@ -46,31 +46,33 @@
 
 
 		<div id="body">
-		<b>A) Find all control areas whose numbers of turnstiles are greater than 15</b>
+		<b>D) List station names that Line A(A train) stops in descending order of latitude(from north to south).</b>
 		<br>
 		<br>
 			<?php
-				$strSQL = "SELECT controlArea
-						   FROM ControlArea CA
-						   WHERE CA.controlareaID IN
-						 ( SELECT controlAreaID 
-						   FROM TurnStiles 
-						   GROUP BY controlAreaID 
-						   HAVING COUNT(controlAreaID) >15
-						  )";
+				$strSQL = "SELECT DISTINCT stationName 
+						   FROM Station 
+						   WHERE stationID IN 
+							    (SELECT stationID
+							     FROM Line
+							     WHERE Line LIKE '%A%'
+							    )
+			   			   ORDER BY latitude DESC";
 				
 				$rs = mysql_query($strSQL);
 				
-				echo "<table><tr><th>ControlAreas</th></tr>";
+				echo "<table><tr><th>Station Names</th></tr>";
 				while($row = mysql_fetch_array($rs)) {
 
-				echo "<tr><th>".$row['controlArea']."</th></tr>";
+				echo "<tr><th>".$row['stationName']."</th></tr>";
 
 				}
 				echo "</table>";
-
 			mysql_close();
 			?>		
 		</div>
+		<br>
+		<br>
+		<br>
 	</body>
 </html>

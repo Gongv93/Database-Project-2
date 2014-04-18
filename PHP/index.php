@@ -1,3 +1,5 @@
+
+
 <html>
 	<head>
 		<title>Database</title>
@@ -37,35 +39,25 @@
 			 };
 			</script>
 		</div>
-
 		<hr>
-
-
 		<div id="body">
-		<b>C) List station names with at least one control area that has more than 15 turnstiles</b>
+		<br>		
+		Select the problem you want the answer to...
 		<br>
 		<br>
-			<?php
-				$strSQL = "SELECT DISTINCT stationName
-						   FROM Station S, ControlArea CA
-						   WHERE S.stationID = CA.stationID AND CA.controlareaID IN
-							( SELECT controlAreaID 
-							  FROM TurnStiles 
-							  GROUP BY controlAreaID 
-							  HAVING COUNT(controlAreaID) > 15
-							)";
-				
-				$rs = mysql_query($strSQL);
-				
-				echo "<u>Station Names</u><br>";
-				while($row = mysql_fetch_array($rs)) {
-
-				echo $row['stationName']."<br/>";
-
-				}
-
-			mysql_close();
-			?>		
+		A) Find all control areas whose numbers of turnstiles are greater than 15. (7%)
+		<br>
+		B) List remote unit ids that have more than one control areas. (8%)
+		<br>
+		C) List station names with at least one control area that has more than 15 turnstiles (SCP tuples). (10%)
+		<br>
+		D) List station names that Line A (A train) stops in descending order of latitude (from north to south) (10%)
+		<br>
+		E) Tabulate station names, ids and total numbers of control areas in the middle town area, e.g., latitude between 40.750 and 40.760 and longitude between -74.000 and -73.95 (10%). 
+		<br>
+		F) Tabulate station names, ids, total numbers of control areas and total numbers of turnstiles in the middle town area, e.g., latitude between 40.750 and 40.760 and longitude between -74.000 and -73.950. (10%)
+	<br>
 		</div>
 	</body>
 </html>
+

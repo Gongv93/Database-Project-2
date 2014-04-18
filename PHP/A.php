@@ -4,6 +4,10 @@
 		<style type="text/css"> 
 		body{margin:0;padding:0} 
 		#body{width:800px; margin:auto} 
+		table,th,td
+		{
+		border:1px solid black;
+		}
 		</style> 
 	</head>
 	
@@ -42,30 +46,34 @@
 
 
 		<div id="body">
-		<b>C) List station names that Line A(A train) stops in descending order of latitude(from north to south)</b>
+		<b>A) Find all control areas whose numbers of turnstiles are greater than 15.</b>
 		<br>
 		<br>
 			<?php
-				$strSQL = "SELECT DISTINCT stationName 
-						   FROM Station 
-						   WHERE stationID IN 
-							    (SELECT stationID
-							     FROM Line
-							     WHERE Line LIKE '%A%'
-							    )
-			   			   ORDER BY latitude DESC";
+				$strSQL = "SELECT controlArea
+						   FROM ControlArea CA
+						   WHERE CA.controlareaID IN
+						 ( SELECT controlAreaID 
+						   FROM TurnStiles 
+						   GROUP BY controlAreaID 
+						   HAVING COUNT(controlAreaID) >15
+						  )";
 				
 				$rs = mysql_query($strSQL);
 				
-				echo "<u>Station Names</u><br>";
+				echo "<table><tr><th>ControlAreas</th></tr>";
 				while($row = mysql_fetch_array($rs)) {
 
-				echo $row['stationName']."<br/>";
+				echo "<tr><th>".$row['controlArea']."</th></tr>";
 
 				}
+				echo "</table>";
 
 			mysql_close();
 			?>		
 		</div>
+		<br>
+		<br>
+		<br>
 	</body>
 </html>

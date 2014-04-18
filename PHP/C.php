@@ -2,12 +2,12 @@
 	<head>
 		<title>Database</title>
 		<style type="text/css"> 
-			body{margin:0;padding:0} 
-			#body{width:800px; margin:auto} 
-			table,th,td
-			{
-			border:1px solid black;
-			}
+		body{margin:0;padding:0} 
+		#body{width:800px; margin:auto} 
+		table,th,td
+		{
+		border:1px solid black;
+		}
 		</style> 
 	</head>
 	
@@ -46,31 +46,33 @@
 
 
 		<div id="body">
-		<b>C) Tabulate station names, ids and total numbers of control areas in the middle town area, e.g., latitude between 40.750 and 40.760 and longitude between -74.000 and -73.95</b>
+		<b>C) List station names with at least one control area that has more than 15 turnstiles.</b>
 		<br>
 		<br>
 			<?php
-				$strSQL = "SELECT S.stationID, S.stationName, COUNT(controlArea) AS ControlAreas
-						   FROM Station S, ControlArea CA, (SELECT stationID
-														    FROM Station
-														    WHERE latitude > 40.750 AND latitude < 40.760 AND longitude > -74.000 AND longitude < -73.95
-														   ) R1
-						   WHERE R1.stationID = CA.stationID AND R1.stationID = S.stationID
-						   GROUP BY CA.stationID";
+				$strSQL = "SELECT DISTINCT stationName
+						   FROM Station S, ControlArea CA
+						   WHERE S.stationID = CA.stationID AND CA.controlareaID IN
+							( SELECT controlAreaID 
+							  FROM TurnStiles 
+							  GROUP BY controlAreaID 
+							  HAVING COUNT(controlAreaID) > 15
+							)";
 				
 				$rs = mysql_query($strSQL);
 				
-				echo "<table>
-						<tr><th>Station ID</th><th>Station Name</th><th>Control Areas</th></tr>";
-				
+				echo "<table><tr><th>Station Names</th></tr>";
 				while($row = mysql_fetch_array($rs)) {
 
-				echo "<tr><th>" . $row['stationID'] . "</th><th>" . $row['stationName'] . "</th><th>" . $row['ControlAreas'] . "</th></tr>";
+				echo "<tr><th>".$row['stationName']."</th></tr>";
 
 				}
 				echo "</table>";
 			mysql_close();
 			?>		
 		</div>
+		<br>
+		<br>
+		<br>
 	</body>
 </html>
