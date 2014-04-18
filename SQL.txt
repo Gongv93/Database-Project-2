@@ -2,7 +2,7 @@ A)
 
 SELECT controlArea
 FROM ControlArea CA
-WHERE CA.controlarea IN
+WHERE CA.controlareaID IN
 	( SELECT controlAreaID 
 	  FROM TurnStiles 
 	  GROUP BY controlAreaID 
@@ -17,11 +17,20 @@ WHERE count(remoteunit) > 1
 
 C)
 
-SELECT stationname
-FROM Station
-WHERE stationID IN 
-	 (SELECT stationID
-	  FROM controlareas, turnstiles
-	  WHERE controlareas.controlAreaID IN (COUNT(turnstiles.controlareaID) > 15))
+SELECT DISTINCT stationname
+FROM Station S, ControlArea CA
+WHERE S.stationID = CA.stationID AND CA.controlareaID IN
+	( SELECT controlAreaID 
+	  FROM TurnStiles 
+	  GROUP BY controlAreaID 
+	  HAVING COUNT(controlAreaID) >15
+	);
+
 
 D)
+
+SELECT stationName 
+FROM Station S, Line L 
+WHERE S.stationID = L.stationID AND  L.lineName LIKE '%A%'
+ORDER BY S.longitude DESC;
+
