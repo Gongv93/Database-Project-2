@@ -43,7 +43,17 @@ E)
 SELECT S.stationID, S.tationName, COUNT(controlArea) AS ControlAreas
 FROM Station S, ControlArea CA, (SELECT stationID
 								 FROM Station
-								 WHERE atitude > 40.750 AND latitude < 40.760 AND longitude > -74.000 AND longitude < -73.95
+								 WHERE latitude > 40.750 AND latitude < 40.760 AND longitude > -74.000 AND longitude < -73.95
 								) R1
+WHERE R1.stationID = CA.stationID AND R1.stationID = S.stationID
+GROUP BY CA.stationID;
+
+F)
+
+SELECT S.stationID, S.tationName, COUNT(CA.controlAreaID = ST.controlAreaID) AS ControlAreas
+FROM Station S, ControlArea CA, TurnStiles TS, (SELECT stationID
+												FROM Station
+												WHERE latitude > 40.750 AND latitude < 40.760 AND longitude > -74.000 AND longitude < -73.95
+											   ) R1
 WHERE R1.stationID = CA.stationID AND R1.stationID = S.stationID
 GROUP BY CA.stationID;
