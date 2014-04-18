@@ -48,19 +48,21 @@
 		<div id="body">
 			
 			<b>B) List remote unit ids that have more than one control areas. </b>
+			<br>
 			<?php
 				$strSQL = "SELECT DISTINCT remoteUnit
-						   FROM RemoteUnit 
-						   WHERE count(remoteUnit) > 1";
+						   FROM ControlArea
+						   GROUP BY remoteUnit
+						   HAVING count(remoteunit) > 1";
 				
 				$rs = mysql_query($strSQL);
-				
+				echo "<table><tr><th>Remote Unit ID</th></tr>";
 				while($row = mysql_fetch_array($rs)) {
 
-				echo $row['remoteUnit']."<br/>";
+				echo "<tr><th>".$row['remoteUnit']."</th></tr>";
 
 				}
-
+				echo "</table>";
 			mysql_close();
 			?>		
 		</div>
