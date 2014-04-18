@@ -29,8 +29,21 @@ WHERE S.stationID = CA.stationID AND CA.controlareaID IN
 
 D)
 
-SELECT stationName 
-FROM Station S, Line L 
-WHERE S.stationID = L.stationID AND  L.lineName LIKE '%A%'
-ORDER BY S.longitude DESC;
+SELECT DISTINCT stationName 
+FROM Station 
+WHERE stationID IN 
+	 (SELECT stationID
+	  FROM Line
+	  WHERE Line LIKE '%A%'
+	  )
+ORDER BY latitude DESC;
 
+E)
+
+SELECT S.stationID, S.tationName, COUNT(controlArea) AS ControlAreas
+FROM Station S, ControlArea CA, (SELECT stationID
+								 FROM Station
+								 WHERE atitude > 40.750 AND latitude < 40.760 AND longitude > -74.000 AND longitude < -73.95
+								) R1
+WHERE R1.stationID = CA.stationID AND R1.stationID = S.stationID
+GROUP BY CA.stationID;

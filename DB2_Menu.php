@@ -12,6 +12,9 @@
             } 
             mysql_select_db("d409"); 
         ?>
+		
+		<h1>MTA DATABASE</h1>
+		
 		<?php
 		$strSQL = "SELECT controlArea
 				   FROM ControlArea CA
