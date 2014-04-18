@@ -49,11 +49,13 @@ WHERE R1.stationID = CA.stationID AND R1.stationID = S.stationID
 GROUP BY CA.stationID;
 
 F)
-SELECT S.stationID, S.stationName, TurnStiles
+
+SELECT S.stationID, S.stationName, COUNT(controlArea) AS ControlAreas,SUM(TurnStiles) AS TurnStiles
 FROM Station S, ControlArea CA ( SELECT controlAreaID, COUNT(controlAreaID) AS TurnStiles
 								 FROM TurnStiles
 								 GROUP BY controlAreaID
 							   ) R1
-WHERE CA.controlAreaID = R1.controlAreaID AND CA.stationID = S.stationID
+WHERE CA.controlAreaID = R1.controlAreaID AND CA.stationID = S.stationID AND latitude > 40.750 AND latitude < 40.760 AND longitude > -74.000 AND longitude < -73.95
+GROUP BY CA.stationID
 
 
